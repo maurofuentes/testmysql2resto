@@ -28,7 +28,31 @@ exports.getPlatos = (req, res) => {
 exports.getPlato = (req, res) => {
   const body = req.body;
   const id = body.id;
-  res.status(200).json(platosRepository.getPlato(id));
+
+  try {
+    // create the connection to database
+    const connection = mysql.createConnection({
+      host: process.env.HOST,
+      user: process.env.DB_USER,
+      database: process.env.DB_NAME,
+    });
+
+    console.log("conectado a DB");
+    console.log(id);
+
+    // execute will internally call prepare and query
+    connection.execute(
+      "SELECT * FROM platos WHERE plato_id = ?",
+      [id],
+      function (err, results, fields) {
+        console.log(results);
+
+        res.status(200).json(results);
+      }
+    );
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 exports.changePlatoPrice = (req, res) => {
