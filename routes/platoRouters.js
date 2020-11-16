@@ -10,6 +10,6 @@ router.put('/', platosController.changePlatoPrice);
 
 router.delete('/:id', platosController.deleteDishById);
 
-router.post('/', platosController.getPlato);
+router.post('/', platosController.addNewDish);
 
 module.exports = router;

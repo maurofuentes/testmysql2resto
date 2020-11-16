@@ -44,6 +44,41 @@ exports.getDishById = (id) => {
 
 }
 
+exports.addNewDish = (nombre, precio, categoria_id) => {
+
+    return new Promise(function ( resolve, reject ) {
+
+        db.connection.execute("INSERT INTO platos (nombre, precio, categoria_id) VALUES(?,?,?)",
+        [nombre, precio, categoria_id],
+        function (err, results, fields) {
+            if(err){
+                console.log(err);
+        
+                reject("error al ejecutar la consulta");
+
+            }
+            console.log(results);
+    
+        });
+            
+        db.connection.execute("SELECT * FROM platos",
+            function (err, results, fields) {
+                if(err){
+                    console.log(err);
+            
+                    reject("error al ejecutar la consulta");
+
+                }
+                console.log(results);
+        
+                resolve(results);
+        
+        });
+         // resolve("el precio del plato se ha actualizado correctamente");
+            
+    });
+}
+
 
 exports.changePlatoPrice = (id, price) => {
 

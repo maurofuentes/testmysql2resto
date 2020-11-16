@@ -35,6 +35,27 @@ exports.getPlato = async (req, res) => {
   
 };
 
+exports.addNewDish = async (req, res) => {
+
+  const nombre = req.body.nombre;
+  const precio = req.body.precio;
+  const categoria_id = req.body.categoria_id;
+
+  try {
+
+    const platos = await platosRepository.addNewDish(nombre, precio, categoria_id);
+
+    res.status(200).json(platos);
+
+    
+  } catch (error) {
+    
+    return res.status(500).json({msg: "error al ejecutar la consulta"});
+    
+  }
+
+}
+
 exports.changePlatoPrice = async (req, res) => {
   const body = req.body;
   const id = body.id;
