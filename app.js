@@ -27,8 +27,6 @@ app.use(bodyParser.json());
 
 app.use(morgan("tiny"));
 
-app.use("/", platoRoutes);
-
 app.use("/platos", platoRoutes);
 
 app.use("/categorias", categoriaRoutes);
