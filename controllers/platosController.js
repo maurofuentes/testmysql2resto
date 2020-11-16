@@ -1,45 +1,38 @@
-const platosRepository = require("../models/Plato");
 const db = require('../config/db');
+const platosRepository = require('../repositories/platosRepository');
 
-exports.getPlatos = (req, res) => {
+exports.getPlatos = async (req, res) => {
  
-    // execute will internally call prepare and query
-    db.connection.execute("SELECT * f platos", function (err, results, fields) {
-      if(err){
-        console.log(err);
+  try {
+    const platos = await platosRepository.getAll();
+    
+    res.status(200).json(platos);
 
-        return res.status(500).json({msg: "error al ejecutar la consulta"});
-      }
-      console.log(results);
-      res.status(200).json(results);
-      // console.log(fields);
-    });
+  } catch (error) {
+    res.status(500).json({msg: error});
+  }
 
-  // res.status(200).json(platosRepository.plato);
 };
 
-exports.getPlato = (req, res) => {
+exports.getPlato = async (req, res) => {
   
   const id = req.params.id;
   
-  // execute will internally call prepare and query
-  db.connection.execute(
-    "SELECT * FROM platos WHERE plato_id = ?",
-    [id],
-    function (err, results, fields) {
-      
-      if(err){
-        return res.status(500).json({msg: "error al ejecutar la consulta"});
-      }
+  try {
+    
+    const plato = await platosRepository.getDishById(id);
 
-      if(results.length === 0){
-        return res.status(404).json({msg: "no se encontró el plato indicado"});
-      }
-      console.log(results);
-
-      res.status(200).json(results[0]);
+    if(plato.length === 0){
+      return res.status(404).json({msg: "no se encontró el plato indicado"});
     }
-  );
+
+    res.status(200).json(plato[0]);
+    
+  } catch (error) {
+    
+    return res.status(500).json({msg: "error al ejecutar la consulta"});
+
+  }
   
 };
 
