@@ -35,18 +35,26 @@ exports.getPlato = async (req, res) => {
   
 };
 
-exports.changePlatoPrice = (req, res) => {
+exports.changePlatoPrice = async (req, res) => {
   const body = req.body;
   const id = body.id;
-  //const id=body.new_price;
-  const result = platosRepository.changePlatoPrice(id, new_price);
-  if (result) {
-    res
-      .status(200)
-      .json({ message: "El plato cambio de categoria correctamente." });
-  } else {
-    res.status(403).json({ message: "El plato no cambio de categoria." });
+  const price = body.precio;
+
+  console.log(body);
+  
+  try {
+    
+    const result = await platosRepository.changePlatoPrice(id, price);
+
+    res.status(200).json(result[0]);
+
+  } catch (error) {
+
+    console.log(error);
+
+    res.status(500).json({msg: "error"});
   }
+
 };
 
 exports.changePlatoCategory = (req, res) => {
@@ -63,13 +71,20 @@ exports.changePlatoCategory = (req, res) => {
   }
 };
 
-exports.deletePlato = (req, res) => {
-  const body = req.body;
-  const id = body.id;
-  const result = platosRepository.deletePlato(id);
-  if (result) {
-    res.status(200).json({ message: "El plato fue borrado correctamente." });
-  } else {
+exports.deleteDishById = async (req, res) => {
+
+  const id = req.params.id;
+  
+  try {
+
+    const platos = await platosRepository.deleteDishById(id);
+
+    res.status(200).json(platos);
+    
+  } catch (error) {
+
     res.status(403).json({ message: "El plato no se pudo borrar." });
+
   }
+
 };

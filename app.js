@@ -4,7 +4,6 @@ require("dotenv").config();
 const app = express();
 const morgan = require("morgan");
 const port = process.env.NODE_PORT || 4040;
-const userRoutes = require("./routes/userRouters");
 const platoRoutes = require("./routes/platoRouters");
 const categoriaRoutes = require("./routes/categoryRouters");
 // const mysql = require('mysql2');
