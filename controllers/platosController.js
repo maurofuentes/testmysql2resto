@@ -1,4 +1,3 @@
-const db = require('../config/db');
 const platosRepository = require('../repositories/platosRepository');
 
 exports.getPlatos = async (req, res) => {
